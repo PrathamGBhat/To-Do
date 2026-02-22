@@ -52,12 +52,16 @@ router.get('/api/display-tasks',async (req, res)=>{
 
     try{
 
-        const tasks = await TaskModel.find({},{_id : 0, task : 1, status : 1});
+        const tasks = await TaskModel.find({},{_id : 1, task : 1, status : 1});
 
         console.log("Successfully read all tasks from database");
         res.status(200).json({
             message : "OK",
-            data : tasks
+            data : tasks.map(task => ({
+                id : task._id,
+                task : task.task,
+                status : task.status
+            }))
         });
 
     } catch (err) {
